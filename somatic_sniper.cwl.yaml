@@ -1,50 +1,51 @@
 class: CommandLineTool
 label: SomaticSniper
-baseCommand: [ /opt/SomaticSniper.py, -F, vcf, --workdir, ./ ]
+cwlVersion: v1.0
+baseCommand: [ python /opt/SomaticSniper.py, -F, vcf, --workdir, ./ ]
 requirements:
   - class: "DockerRequirement"
     dockerImageId: "opengenomics/somatic-sniper:1.0.5"
 inputs:
-  - id: "#reference"
+  - id: "reference"
     type: File
     inputBinding:
       prefix: -f
-  - id: "#tumor_name"
+  - id: "tumor_name"
     type: string
     default: "TUMOR"
     inputBinding:
       prefix: -t
-  - id: "#normal_name"
+  - id: "normal_name"
     type: string
     default: "NORMAL"
     inputBinding:
       prefix: -n
-  - id: "#mapq"
+  - id: "mapq"
     type: int
     inputBinding:
       prefix: -q
     default: 0
-  - id: "#somaticq"
+  - id: "somaticq"
     type: int
     inputBinding:
       prefix: -Q
-    default: 15
-  - id: "#loh"
+    default: 40
+  - id: "loh"
     type: boolean
     default: False
     inputBinding:
       prefix: "-L"
-  - id: "#gor"
+  - id: "gor"
     type: boolean
     default: False
     inputBinding:
       prefix: "-G"
-  - id: "#dis_priors"
+  - id: "dis_priors"
     type: boolean
     default: False
     inputBinding:
       prefix: "-p"
-  - id: "#use_priorp"
+  - id: "use_priorp"
     type: boolean
     default: False
     inputBinding:
@@ -69,9 +70,7 @@ inputs:
       position: 3
 
 outputs:
-  - id: "#mutations"
+  - id: "mutations"
     type: File
     outputBinding:
-      glob:
-        engine: "cwl:JsonPointer"
-        script: job/output_name
+      glob: mutations.vcf
